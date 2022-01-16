@@ -149,7 +149,7 @@ public class MainView extends BaseView<BorderPane, MainPresenter>
 		this.exitFile.setOnAction(e -> this.presenter.exit());
 
 		this.perspectiveAdmin.setOnAction(e -> this.presenter.showAdminPerspective());
-		this.perspectiveUser.setOnAction(null);
+		this.perspectiveUser.setOnAction(e -> this.presenter.showUserPerspective());
 
 		this.openHelp.setOnAction(e -> this.showHelp());
 		this.aboutHelp.setOnAction(null);
@@ -170,12 +170,23 @@ public class MainView extends BaseView<BorderPane, MainPresenter>
 		dlg.showAndWait();
 	}
 
-	public void changePerspective(final PERSPECTIVE_TYPE admin)
+	public void changePerspective(final PERSPECTIVE_TYPE type)
 	{
-		final SearchProjectView searchView = CDI.COMTAINTER.getType(SearchProjectView.class);
-		final EditProjectView editView = CDI.COMTAINTER.getType(EditProjectView.class);
+		if (type.equals(PERSPECTIVE_TYPE.ADMIN))
+		{
+			final SearchProjectView searchView = CDI.COMTAINTER.getType(SearchProjectView.class);
+			final EditProjectView editView = CDI.COMTAINTER.getType(EditProjectView.class);
 
-		this.root.setLeft(searchView.getRoot());
-		this.root.setCenter(editView.getRoot());
+			this.root.setLeft(searchView.getRoot());
+			this.root.setCenter(editView.getRoot());
+		}
+		if (type.equals(PERSPECTIVE_TYPE.USER))
+		{
+			final ProjectView project = CDI.COMTAINTER.getType(ProjectView.class);
+			this.root.setLeft(null);
+			this.root.setCenter(null);
+			this.root.setCenter(project.getRoot());
+		}
+
 	}
 }

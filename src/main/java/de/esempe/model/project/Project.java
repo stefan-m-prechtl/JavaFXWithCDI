@@ -2,9 +2,7 @@ package de.esempe.model.project;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-
-import javax.json.bind.annotation.JsonbCreator;
-import javax.json.bind.annotation.JsonbProperty;
+import java.util.UUID;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -15,20 +13,30 @@ public class Project implements Serializable
 
 	private SimpleStringProperty propName = new SimpleStringProperty();
 
-	private Long id;
+	private UUID id;
+	private String description;
 	private LocalDateTime startDate;
 	private LocalDateTime endDate;
 
-	@JsonbCreator
-	public Project(@JsonbProperty("id") Long id, @JsonbProperty("name") String name)
+	public Project(UUID id, String name)
 	{
 		this.id = id;
 		this.setName(name);
 	}
 
-	public Long getId()
+	public UUID getId()
 	{
 		return this.id;
+	}
+
+	public String getDescription()
+	{
+		return this.description;
+	}
+
+	public void setDescription(String description)
+	{
+		this.description = description;
 	}
 
 	public void setName(final String value)
