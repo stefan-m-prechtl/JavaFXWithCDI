@@ -1,6 +1,6 @@
 package de.esempe.service.project;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.json.bind.JsonbBuilder;
@@ -17,9 +17,7 @@ public class ProjectService extends AbstractService
 {
 	public ProjectService()
 	{
-		// super("http://localhost:8080/monolith/rext/projectmgmt", "project");
-		super("http://localhost:8080/monolith/rext/projectmgmt/projects");
-
+		super("http://localhost:8080/app/demo/ping");
 		final JsonbConfig config = new JsonbConfig().withAdapters(new ProjectJsonAdapter());
 		this.jsonb = JsonbBuilder.create(config);
 
@@ -33,14 +31,10 @@ public class ProjectService extends AbstractService
 
 	public List<Project> loadAll()
 	{
-		final Response response = this.doGET();
+		final Response response = this.doGET("");
 		final String content = response.readEntity(String.class);
-		// final List<ProjectDTO> listTO = this.jsonb.fromJson(content, new ArrayList<ProjectDTO>(){}.getClass().getGenericSuperclass());
-		final List<Project> result = this.jsonb.fromJson(content, new ArrayList<Project>()
-		{
-		}.getClass().getGenericSuperclass());
-
-		// final List<ProjectDTO> listTO = Arrays.asList(new ProjectDTO(new Project(1L, "Demo-Projekt")), new ProjectDTO(new Project(2L, "Projekt R2")));
+		// final List<Project> result = this.jsonb.fromJson(content, new ArrayList<Project>(){}.getClass().getGenericSuperclass());
+		final List<Project> result = Arrays.asList(new Project(1L, "Demo-Projekt"), new Project(2L, "Projekt R2"));
 
 		return result;
 

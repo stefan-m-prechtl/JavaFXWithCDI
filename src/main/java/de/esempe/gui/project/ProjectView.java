@@ -12,7 +12,6 @@ import javafx.beans.property.ListProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -43,7 +42,7 @@ public class ProjectView extends BaseView<BorderPane, ProjectPresenter>
 	private final ObjectProperty<Project> currentProject = new SimpleObjectProperty<>();
 
 	@Inject
-	public ProjectView(ProjectPresenter presenter, ApplicationRegistry registry)
+	public ProjectView(final ProjectPresenter presenter, final ApplicationRegistry registry)
 	{
 		super(presenter, registry);
 	}
@@ -132,8 +131,7 @@ public class ProjectView extends BaseView<BorderPane, ProjectPresenter>
 	private void initActionHandler()
 	{
 		this.btnLoad.setOnAction(e -> this.load());
-		this.lvwSearchResult.getSelectionModel().selectedItemProperty()
-				.addListener((final ObservableValue<? extends String> ov, final String oldValue, final String newValue) -> this.loadProject(newValue));
+		this.lvwSearchResult.getSelectionModel().selectedItemProperty().addListener((ov, oldValue, newValue) -> this.loadProject(newValue));
 	}
 
 	// ##### Action Handler ####

@@ -1,8 +1,6 @@
 package de.esempe.model.project;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.util.UUID;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -13,18 +11,16 @@ public class Project implements Serializable
 
 	private SimpleStringProperty propName = new SimpleStringProperty();
 
-	private UUID id;
+	private long id;
 	private String description;
-	private LocalDateTime startDate;
-	private LocalDateTime endDate;
 
-	public Project(UUID id, String name)
+	public Project(final long id, final String name)
 	{
 		this.id = id;
 		this.setName(name);
 	}
 
-	public UUID getId()
+	public long getId()
 	{
 		return this.id;
 	}
@@ -34,7 +30,7 @@ public class Project implements Serializable
 		return this.description;
 	}
 
-	public void setDescription(String description)
+	public void setDescription(final String description)
 	{
 		this.description = description;
 	}
@@ -49,16 +45,6 @@ public class Project implements Serializable
 		return this.propName.get();
 	}
 
-	public void setStartdate(final LocalDateTime startDate)
-	{
-		this.startDate = startDate;
-	}
-
-	public void setEnddate(final LocalDateTime endDate)
-	{
-		this.endDate = endDate;
-	}
-
 	public StringProperty nameProperty()
 	{
 		return this.propName;
@@ -67,7 +53,7 @@ public class Project implements Serializable
 	@Override
 	public String toString()
 	{
-		return this.getName() + "(" + this.id + ")";
+		return this.getName() + "(ID: " + this.id + ")";
 	}
 
 }

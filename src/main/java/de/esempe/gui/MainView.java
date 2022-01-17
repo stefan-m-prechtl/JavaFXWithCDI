@@ -4,6 +4,7 @@ import de.esempe.gui.help.HelpDialog;
 import de.esempe.gui.project.EditProjectView;
 import de.esempe.gui.project.ProjectView;
 import de.esempe.gui.project.SearchProjectView;
+import de.esempe.gui.tree.TreeInfoView;
 import de.esempe.model.UserSession;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -27,7 +28,7 @@ public class MainView extends BaseView<BorderPane, MainPresenter>
 {
 	enum PERSPECTIVE_TYPE
 	{
-		ADMIN, USER
+		ADMIN, USER, TREE
 	}
 
 	@Inject
@@ -40,6 +41,7 @@ public class MainView extends BaseView<BorderPane, MainPresenter>
 	private MenuItem exitFile;
 	private RadioMenuItem perspectiveAdmin;
 	private RadioMenuItem perspectiveUser;
+	private RadioMenuItem perspectiveTree;
 	private MenuItem openHelp;
 	private MenuItem aboutHelp;
 
@@ -64,6 +66,9 @@ public class MainView extends BaseView<BorderPane, MainPresenter>
 		// initialize action handler
 		this.initActionHandler();
 
+		// Initiale Perspektive setzen
+		this.changePerspective(PERSPECTIVE_TYPE.TREE);
+
 	}
 
 	private void createGui()
@@ -71,8 +76,8 @@ public class MainView extends BaseView<BorderPane, MainPresenter>
 		this.root = new BorderPane();
 		this.root.setTop(this.createMainMenu());
 
-		final ProjectView project = CDI.COMTAINTER.getType(ProjectView.class);
-		this.root.setCenter(project.getRoot());
+		// final ProjectView project = CDI.COMTAINTER.getType(ProjectView.class);
+		// this.root.setCenter(project.getRoot());
 
 		// final HBox menuBox = new HBox();
 		// menuBox.getChildren().add(this.createMainMenu());
@@ -106,10 +111,12 @@ public class MainView extends BaseView<BorderPane, MainPresenter>
 		final ToggleGroup perspectiveGroup = new ToggleGroup();
 		this.perspectiveAdmin = new RadioMenuItem("Admin");
 		this.perspectiveUser = new RadioMenuItem("User");
+		this.perspectiveTree = new RadioMenuItem("Tree");
 		this.perspectiveAdmin.setToggleGroup(perspectiveGroup);
 		this.perspectiveUser.setToggleGroup(perspectiveGroup);
+		this.perspectiveTree.setToggleGroup(perspectiveGroup);
 
-		perspectiveWindow.getItems().addAll(this.perspectiveUser, this.perspectiveAdmin);
+		perspectiveWindow.getItems().addAll(this.perspectiveUser, this.perspectiveAdmin, this.perspectiveTree);
 
 		final MenuItem preferencesWindow = new MenuItem("Preferences");
 
@@ -150,6 +157,7 @@ public class MainView extends BaseView<BorderPane, MainPresenter>
 
 		this.perspectiveAdmin.setOnAction(e -> this.presenter.showAdminPerspective());
 		this.perspectiveUser.setOnAction(e -> this.presenter.showUserPerspective());
+		this.perspectiveTree.setOnAction(e -> this.presenter.showTreePerspective());
 
 		this.openHelp.setOnAction(e -> this.showHelp());
 		this.aboutHelp.setOnAction(null);
@@ -184,8 +192,15 @@ public class MainView extends BaseView<BorderPane, MainPresenter>
 		{
 			final ProjectView project = CDI.COMTAINTER.getType(ProjectView.class);
 			this.root.setLeft(null);
-			this.root.setCenter(null);
+			// this.root.setCenter(null);
 			this.root.setCenter(project.getRoot());
+		}
+		if (type.equals(PERSPECTIVE_TYPE.TREE))
+		{
+			final TreeInfoView treeView = CDI.COMTAINTER.getType(TreeInfoView.class);
+			this.root.setLeft(null);
+			// this.root.setCenter(null);
+			this.root.setCenter(treeView.getRoot());
 		}
 
 	}

@@ -42,6 +42,11 @@ public class MainPresenter extends BasePresenter<MainView>
 		this.view.changePerspective(PERSPECTIVE_TYPE.USER);
 	}
 
+	void showTreePerspective()
+	{
+		this.view.changePerspective(PERSPECTIVE_TYPE.TREE);
+	}
+
 	void exit()
 	{
 		Platform.exit();

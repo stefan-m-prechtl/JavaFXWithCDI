@@ -13,7 +13,7 @@ public class FxApp extends Application
 	@Inject
 	private ApplicationRegistry registry;
 
-	public static void main(String[] args)
+	public static void main(final String[] args)
 	{
 		launch();
 	}
@@ -31,21 +31,18 @@ public class FxApp extends Application
 	}
 
 	@Override
-	public void start(Stage stage) throws Exception
+	public void start(final Stage stage) throws Exception
 	{
 		// create and show main view
 		final MainView view = CDI.COMTAINTER.getType(MainView.class);
 		final Parent parent = view.getRoot();
-
 		final Scene scene = new Scene(parent, 800, 600);
 		scene.getStylesheets().add("/styles/Styles.css");
-
 		stage.setTitle("JavaFX with CDI");
 		stage.setResizable(true);
 		stage.setScene(scene);
 		stage.centerOnScreen();
 		stage.show();
-
 	}
 
 	@Override

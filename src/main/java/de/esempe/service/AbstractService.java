@@ -16,7 +16,6 @@ public class AbstractService
 {
 	protected Client client = null;
 	protected WebTarget target = null;
-	protected Invocation.Builder invocationBuilder = null;
 
 	protected String resourcePath;
 
@@ -34,10 +33,18 @@ public class AbstractService
 		this.target = this.client.target(this.resourcePath);
 	}
 
-	protected Response doGET()
+	protected Response doGET(final String pathExtension)
 	{
-		this.invocationBuilder = this.target.request(MediaType.APPLICATION_JSON);
-		final var res = this.invocationBuilder.get();
+		WebTarget target = this.target;
+		if (!pathExtension.isEmpty())
+		{
+			target = this.target.path(pathExtension);
+		}
+
+		System.out.println(target.getUri().toString());
+
+		final Invocation.Builder invocationBuilder = target.request(MediaType.APPLICATION_JSON);
+		final var res = invocationBuilder.get();
 		return res;
 	}
 
