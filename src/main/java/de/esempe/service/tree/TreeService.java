@@ -17,7 +17,7 @@ public class TreeService extends AbstractService
 {
 	public TreeService()
 	{
-		super("http://localhost:8080/app/demo/treemgmt/fulltree");
+		super("http://localhost:8080/treebackend/demo/treemgmt/fulltree");
 	}
 
 	@PostConstruct
