@@ -10,9 +10,6 @@ import de.esempe.model.tree.Treenode;
 import de.esempe.service.tree.TreeService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.scene.control.TreeItem;
 
 @ApplicationScoped
 public class TreeInfoPresenter extends BasePresenter<TreeInfoView>
@@ -31,32 +28,21 @@ public class TreeInfoPresenter extends BasePresenter<TreeInfoView>
 		this.listTreeInfo = new ArrayList<>();
 	}
 
-	void loadAll()
+	void loadTreeInfos()
 	{
 		this.listTreeInfo = this.service.loadAll();
-
-		// convert model to a view model
-		final ObservableList<TreeInfo> viewmodel = FXCollections.observableArrayList();
-		viewmodel.addAll(this.listTreeInfo);
-
-		// call view to show the data
-		this.view.showTreeInfoList(viewmodel);
+		this.view.showTreeInfoList(this.listTreeInfo);
 	}
 
 	public void loadTree(final TreeInfo treeinfo)
 	{
 		this.tree = this.service.loadTree(treeinfo.getId());
-
-		// call view to show the data
 		this.view.showTree(this.tree);
 	}
 
-	public void loadChildren(final TreeItem<Treenode> newValue)
+	public void loadChildren(final Treenode node)
 	{
-		final var treenode = newValue.getValue();
-		System.out.println(treenode);
-		final var expandedTreenode = this.service.loadNode(this.tree.getId(), treenode.getId());
-
+		final var expandedTreenode = this.service.loadNode(this.tree.getId(), node.getId());
 		this.view.expandNode(expandedTreenode);
 	}
 

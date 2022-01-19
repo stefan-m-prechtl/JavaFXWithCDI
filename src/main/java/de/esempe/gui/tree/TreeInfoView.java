@@ -12,9 +12,10 @@ import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import javafx.beans.property.ListProperty;
-import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.ObjectPropertyBase;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -36,7 +37,7 @@ public class TreeInfoView extends BaseView<BorderPane, TreeInfoPresenter>
 
 	// ### view data for binding to controls ####
 	private final ListProperty<TreeInfo> searchResultList = new SimpleListProperty<>();
-	private final ObjectProperty<TreeInfo> currentTreeInfo = new SimpleObjectProperty<>();
+	private final ObjectPropertyBase<TreeItem<Treenode>> rootNode = new SimpleObjectProperty<TreeItem<Treenode>>();
 
 	@Inject
 	protected TreeInfoView(final TreeInfoPresenter presenter, final ApplicationRegistry registry)
@@ -85,7 +86,7 @@ public class TreeInfoView extends BaseView<BorderPane, TreeInfoPresenter>
 		result.setPadding(new Insets(10, 20, 20, 20));
 		result.setSpacing(15);
 
-		this.tvwTree = new TreeView<>();
+		this.tvwTree = new TreeView<Treenode>();
 		result.getChildren().addAll(this.tvwTree);
 
 		return result;
@@ -95,28 +96,39 @@ public class TreeInfoView extends BaseView<BorderPane, TreeInfoPresenter>
 	private void initDatabinding()
 	{
 		this.lvwOverview.itemsProperty().bind(this.searchResultList);
+		this.tvwTree.rootProperty().bind(this.rootNode);
 	}
 
 	private void initActionHandler()
 	{
-		this.btnLoad.setOnAction(e -> this.presenter.loadAll());
+		this.btnLoad.setOnAction(e -> this.presenter.loadTreeInfos());
 		this.lvwOverview.getSelectionModel().selectedItemProperty().addListener((ov, oldValue, newValue) -> {
-			System.out.println("lade Baum: " + newValue);
-			this.presenter.loadTree(newValue);
+			if (null != newValue)
+			{
+				System.out.println("lade Baum: " + newValue);
+				this.presenter.loadTree(newValue);
+			}
 		});
 		this.tvwTree.getSelectionModel().selectedItemProperty().addListener((ov, oldValue, newValue) -> {
-			System.out.println("lade Knoten: " + newValue);
-			this.currentSelectedNode = newValue;
-			this.presenter.loadChildren(newValue);
+			if (null != newValue)
+			{
+				System.out.println("lade Knoten: " + newValue);
+				this.currentSelectedNode = newValue;
+				this.presenter.loadChildren(newValue.getValue());
+			}
 		});
 
 	}
 
 	// ### Interface for Presenter ####
-	public void showTreeInfoList(final ObservableList<TreeInfo> treeinfos)
+	public void showTreeInfoList(final List<TreeInfo> listTreeInfo)
 	{
+		// convert model to a view model
+		final ObservableList<TreeInfo> viewmodel = FXCollections.observableArrayList();
+		viewmodel.addAll(listTreeInfo);
+
 		this.searchResultList.clear();
-		this.searchResultList.set(treeinfos);
+		this.searchResultList.set(viewmodel);
 	}
 
 	public void showTree(final Tree tree)
@@ -131,7 +143,8 @@ public class TreeInfoView extends BaseView<BorderPane, TreeInfoPresenter>
 
 		final var rootItem = new TreeItem<Treenode>(rootNode);
 		rootItem.getChildren().addAll(childitems);
-		this.tvwTree.setRoot(rootItem);
+		// this.tvwTree.setRoot(rootItem);
+		this.rootNode.set(rootItem);
 	}
 
 	public void expandNode(final Treenode expandedTreenode)
