@@ -7,6 +7,7 @@ import javax.json.bind.JsonbBuilder;
 import javax.json.bind.JsonbConfig;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
@@ -41,11 +42,24 @@ public class AbstractService
 			target = this.target.path(pathExtension);
 		}
 
-		System.out.println(target.getUri().toString());
-
 		final Invocation.Builder invocationBuilder = target.request(MediaType.APPLICATION_JSON);
 		final var res = invocationBuilder.get();
 		return res;
+	}
+
+	protected Response doPOST(final String pathExtension, final String payload)
+	{
+		WebTarget target = this.target;
+		if (!pathExtension.isEmpty())
+		{
+			target = this.target.path(pathExtension);
+		}
+
+		final Invocation.Builder invocationBuilder = target.request(MediaType.APPLICATION_JSON);
+		final var res = invocationBuilder.post(Entity.json(payload));
+
+		return res;
+
 	}
 
 }

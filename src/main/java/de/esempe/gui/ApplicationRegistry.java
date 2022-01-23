@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import de.esempe.model.UserSession;
 import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
@@ -12,14 +11,14 @@ public class ApplicationRegistry
 {
 	private final Map<String, Object> objMap = new HashMap<>();
 
-	public void putUserSession(final UserSession session)
+	public void putJsonWebToken(final String token)
 	{
-		this.objMap.put("session", session);
+		this.objMap.put("jwt", token);
 	}
 
-	public UserSession getUserSession()
+	public String getJsonWebToken()
 	{
-		return (UserSession) this.objMap.get("session");
+		return (String) this.objMap.get("jwt");
 	}
 
 	public void putLocale(final Locale locale)
