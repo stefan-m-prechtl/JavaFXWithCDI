@@ -20,21 +20,6 @@ ext {
 
 dependencies {
 
-	// CDI standalone
-	implementation group: 'org.jboss.weld.se', name: 'weld-se-shaded', version: '4.0.2.Final'
-	
-	// REST Client Jersey
-	// ohne Activation: Warnungen!!
-	implementation group: 'javax.activation', name: 'activation', version: '1.1.1'
-	implementation group: 'org.glassfish.jersey.core', name: 'jersey-client', version: "${jerseyVersion}"
-	implementation group: 'org.glassfish', name: 'javax.json', version: "${jsonVersion}"
-	// ohne Injection: Fehler zur Laufzeit!
-	implementation group: 'org.glassfish.jersey.inject', name: 'jersey-hk2', version: "${jerseyVersion}"
-	
-	// JSON-B
-	implementation group: 'javax.json.bind', name: 'javax.json.bind-api', version: '1.0'
-    implementation group: 'org.eclipse', name: 'yasson', version: '1.0.2'
-    implementation  group: 'org.glassfish', name: 'javax.json', version: '1.1.4'
 		
 }
 
@@ -44,14 +29,6 @@ application {
 
 javafx {
     version = "17"
-    modules = [ 'javafx.controls' ]
+    modules = [ 'javafx.controls', 'javafx.fxml' ]
 }
 
-// Damit aufrufbar mit "run", aber "build" scheitert
-//task copyResources(type: Copy) {
-//	duplicatesStrategy = 'exclude'
-//    from "${projectDir}/src/main/resources"
-//    into "${buildDir}/classes/java/main"
-//}
-
-//processResources.dependsOn copyResources
