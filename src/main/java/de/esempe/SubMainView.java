@@ -11,7 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
-public class SubMainView implements Initializable
+public class SubMainView //implements Initializable
 {
 	
 	
@@ -26,8 +26,9 @@ public class SubMainView implements Initializable
 				
 	}
 
-	@Override
-	public void initialize(URL location, ResourceBundle resources)
+	//@Override
+	//public void initialize(URL location, ResourceBundle resources)
+	public void initialize()
 	{
 		this.btnSuchen.setOnAction(e-> {
 			System.out.println("Klicked Suchen");
